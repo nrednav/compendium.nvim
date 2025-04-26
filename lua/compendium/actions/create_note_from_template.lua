@@ -144,7 +144,7 @@ local function create_note_from_template(opts)
 
   if not (telescope_ok and telescope_actions_ok and telescope_actions_state_ok) then
     vim.notify(
-      string.format("[%s] create_note_from_template action failed: telescope.nvim plugin or its components not found."),
+      "[compendium.nvim] create_note_from_template action failed: telescope.nvim plugin or its components not found.",
       vim.log.levels.ERROR
     )
     return
