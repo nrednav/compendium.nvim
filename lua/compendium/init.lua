@@ -28,6 +28,10 @@ function compendium.setup(user_config)
   vim.keymap.set("n", "<leader>nc", function()
     require("compendium.actions.create_note")({ landing_dir = config.landing_dir })
   end, { noremap = true, silent = true, desc = "[compendium.nvim] Create a new note" })
+
+  vim.keymap.set("n", "<leader>nf", function()
+    require("compendium.actions.find_notes")({ landing_dir = config.landing_dir })
+  end, { noremap = true, silent = true, desc = "[compendium.nvim] Find notes" })
 end
 
 return compendium
