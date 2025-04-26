@@ -3,6 +3,7 @@ local compendium = {}
 local config = {
   landing_dir = nil,
   templates_dir = nil,
+  insert_datetime_header = false,
 }
 
 function compendium.setup(user_config)
@@ -12,7 +13,10 @@ function compendium.setup(user_config)
   config.templates_dir = vim.fn.expand(config.templates_dir)
 
   vim.keymap.set("n", "<leader>nc", function()
-    require("compendium.actions.create_note")({ landing_dir = config.landing_dir })
+    require("compendium.actions.create_note")({
+      landing_dir = config.landing_dir,
+      insert_datetime_header = config.insert_datetime_header,
+    })
   end, { noremap = true, silent = true, desc = "[compendium.nvim] Create a new note" })
 
   vim.keymap.set("n", "<leader>nf", function()
@@ -23,6 +27,7 @@ function compendium.setup(user_config)
     require("compendium.actions.create_note_from_template")({
       landing_dir = config.landing_dir,
       templates_dir = config.templates_dir,
+      insert_datetime_header = config.insert_datetime_header,
     })
   end, { noremap = true, silent = true, desc = "[compendium.nvim] Create a new note from a template" })
 
@@ -30,6 +35,7 @@ function compendium.setup(user_config)
     require("compendium.actions.create_note_from_template")({
       landing_dir = vim.loop.cwd(),
       templates_dir = config.templates_dir,
+      insert_datetime_header = config.insert_datetime_header,
     })
   end, { noremap = true, silent = true, desc = "[compendium.nvim] Create a new note from a template in cwd" })
 end

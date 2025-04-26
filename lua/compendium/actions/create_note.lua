@@ -1,3 +1,5 @@
+local get_formatted_datetime = require("compendium.utils.get_formatted_datetime")
+
 local function create_note(opts)
   if not opts.landing_dir or opts.landing_dir == "" then
     vim.notify("[compendium.nvim] create_note action failed: landing_dir is not configured.", vim.log.levels.ERROR)
@@ -25,7 +27,21 @@ local function create_note(opts)
       return
     end
 
-    local file_created = pcall(vim.fn.writefile, {}, filepath)
+    local file_content = {}
+
+    if opts.insert_datetime_header then
+      local datetime_header = {
+        get_formatted_datetime(),
+        "",
+        "",
+      }
+
+      for i = #datetime_header, 1, -1 do
+        table.insert(file_content, 1, datetime_header[i])
+      end
+    end
+
+    local file_created = pcall(vim.fn.writefile, file_content, filepath)
 
     if not file_created then
       vim.notify(
@@ -38,6 +54,8 @@ local function create_note(opts)
     vim.notify("[compendium.nvim] Created note: " .. filepath, vim.log.levels.INFO)
 
     vim.cmd("tabnew " .. vim.fn.fnameescape(filepath))
+
+    vim.cmd("normal! G$") -- Go to end of buffer
   end)
 end
 

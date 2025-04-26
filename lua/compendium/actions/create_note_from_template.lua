@@ -1,3 +1,5 @@
+local get_formatted_datetime = require("compendium.utils.get_formatted_datetime")
+
 local function apply_theme(command, opts)
   local themes = require("telescope.themes")
   return function()
@@ -62,7 +64,20 @@ local function create_note(opts)
       return
     end
 
-    local write_ok, write_err = pcall(vim.fn.writefile, template_content_or_err, filepath)
+    local file_content = template_content_or_err
+
+    if opts.insert_datetime_header then
+      local datetime_header = {
+        get_formatted_datetime(),
+        "",
+      }
+
+      for i = #datetime_header, 1, -1 do
+        table.insert(file_content, 1, datetime_header[i])
+      end
+    end
+
+    local write_ok, write_err = pcall(vim.fn.writefile, file_content, filepath)
 
     if not write_ok then
       vim.notify(
@@ -86,17 +101,6 @@ local function create_note(opts)
 
     vim.cmd("tabnew " .. vim.fn.fnameescape(filepath))
   end)
-end
-
-local function get_selected_template_and_create_note(opts)
-  local template_filepath = get_selected_template({
-    telescope_actions_state = opts.telescope_actions_state,
-    telescope_actions = opts.telescope_actions,
-    prompt_bufnr = opts.prompt_bufnr,
-    templates_dir = opts.templates_dir,
-  })
-
-  create_note({ template_filepath = template_filepath, landing_dir = opts.landing_dir })
 end
 
 local function create_note_from_template(opts)
@@ -151,25 +155,23 @@ local function create_note_from_template(opts)
     cwd = opts.templates_dir,
     hidden = true,
     attach_mappings = function(prompt_bufnr, map)
-      map("i", "<CR>", function()
-        get_selected_template_and_create_note({
+      local function handle_selection()
+        local template_filepath = get_selected_template({
           telescope_actions_state = telescope_actions_state,
           telescope_actions = telescope_actions,
           prompt_bufnr = prompt_bufnr,
-          landing_dir = opts.landing_dir,
           templates_dir = opts.templates_dir,
         })
-      end)
 
-      map("n", "<CR>", function()
-        get_selected_template_and_create_note({
-          telescope_actions_state = telescope_actions_state,
-          telescope_actions = telescope_actions,
-          prompt_bufnr = prompt_bufnr,
+        create_note({
           landing_dir = opts.landing_dir,
-          templates_dir = opts.templates_dir,
+          template_filepath = template_filepath,
+          insert_datetime_header = opts.insert_datetime_header,
         })
-      end)
+      end
+
+      map("i", "<CR>", handle_selection)
+      map("n", "<CR>", handle_selection)
 
       return true
     end,
