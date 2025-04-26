@@ -1,16 +1,12 @@
 local function create_note(opts)
-  if not opts.notes_landing_dir or opts.notes_landing_dir == "" then
-    vim.notify(
-      "[compendium.nvim] create_note action failed: notes_landing_dir is not configured.",
-      vim.log.levels.ERROR
-    )
+  if not opts.landing_dir or opts.landing_dir == "" then
+    vim.notify("[compendium.nvim] create_note action failed: landing_dir is not configured.", vim.log.levels.ERROR)
     return
   end
 
-  if vim.fn.isdirectory(opts.notes_landing_dir) == 0 then
+  if vim.fn.isdirectory(opts.landing_dir) == 0 then
     vim.notify(
-      "[compendium.nvim] create_note action failed: The configured notes_landing_dir does not exist: "
-        .. opts.notes_landing_dir,
+      "[compendium.nvim] create_note action failed: The configured landing_dir does not exist: " .. opts.landing_dir,
       vim.log.levels.ERROR
     )
     return
@@ -22,7 +18,7 @@ local function create_note(opts)
       return
     end
 
-    local filepath = vim.fs.joinpath(opts.notes_landing_dir, filename)
+    local filepath = vim.fs.joinpath(opts.landing_dir, filename)
 
     if vim.fn.filereadable(filepath) == 1 then
       vim.notify("[compendium.nvim] create_note action failed: File already exists: " .. filepath, vim.log.levels.ERROR)
