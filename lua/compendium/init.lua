@@ -1,0 +1,3 @@
+local compendium = {}
+
+return compendium
