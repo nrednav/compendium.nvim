@@ -25,6 +25,13 @@ function compendium.setup(user_config)
       templates_dir = config.templates_dir,
     })
   end, { noremap = true, silent = true, desc = "[compendium.nvim] Create a new note from a template" })
+
+  vim.keymap.set("n", "<leader>nT", function()
+    require("compendium.actions.create_note_from_template")({
+      landing_dir = vim.loop.cwd(),
+      templates_dir = config.templates_dir,
+    })
+  end, { noremap = true, silent = true, desc = "[compendium.nvim] Create a new note from a template in cwd" })
 end
 
 return compendium
