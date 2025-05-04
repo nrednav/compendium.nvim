@@ -7,6 +7,7 @@ local M = {
     find_notes = "<leader>cf",
     create_note_from_template = "<leader>ct",
     create_cwd_note_from_template = "<leader>cT",
+    insert_template = "<leader>ci",
   },
   setup_keymaps = true,
 }

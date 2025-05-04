@@ -13,7 +13,10 @@ local function get_selected_template(opts)
   opts.telescope_actions.close(opts.prompt_bufnr)
 
   if not selection then
-    vim.notify("[compendium.nvim] create_note_from_template cancelled: No template was selected", vim.log.levels.WARN)
+    vim.notify(
+      "[compendium.nvim] create_note_from_template action cancelled: No template was selected",
+      vim.log.levels.WARN
+    )
     return
   end
 
@@ -21,7 +24,7 @@ local function get_selected_template(opts)
 
   if not template_filepath then
     vim.notify(
-      "[compendium.nvim] create_note_from_template failed: Could not get filepath for selected template",
+      "[compendium.nvim] create_note_from_template action failed: Could not get filepath for selected template",
       vim.log.levels.ERROR
     )
     return

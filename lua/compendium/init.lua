@@ -66,6 +66,20 @@ function compendium.setup(user_config)
         desc = "Create a new note from a template, in the current working directory",
       },
     },
+    insert_template = {
+      fn = function()
+        require("compendium.actions.insert_template")({
+          templates_dir = config.templates_dir,
+          insert_datetime_header = config.insert_datetime_header,
+        })
+      end,
+      mode = "n",
+      opts = {
+        noremap = true,
+        silent = true,
+        desc = "Insert a template into the currently open buffer",
+      },
+    },
   }
 
   if config.setup_keymaps then
