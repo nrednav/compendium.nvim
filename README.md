@@ -51,6 +51,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim)
 - To create a new note from a template: `<leader>ct`
 - To create a new note from a template, in the current working directory: `<leader>cT`
 - To find notes in the collection: `<leader>cf`
+- To insert a template into the currently open buffer: `<leader>ci`
 
 ## Configuration
 
@@ -71,6 +72,7 @@ Defaults:
         find_notes = "<leader>cf",
         create_note_from_template = "<leader>ct",
         create_cwd_note_from_template = "<leader>cT",
+        insert_template = "<leader>ci"
       },
       setup_keymaps = true,
     })
