@@ -27,7 +27,10 @@ function compendium.setup(user_config)
     },
     find_notes = {
       fn = function()
-        require("compendium.actions.find_notes")({ landing_dir = config.landing_dir })
+        require("compendium.actions.find_notes")({
+          landing_dir = config.landing_dir,
+          telescope_theme = config.telescope_theme,
+        })
       end,
       mode = "n",
       opts = {
@@ -42,6 +45,7 @@ function compendium.setup(user_config)
           landing_dir = config.landing_dir,
           templates_dir = config.templates_dir,
           insert_datetime_header = config.insert_datetime_header,
+          telescope_theme = config.telescope_theme,
         })
       end,
       mode = "n",
@@ -57,6 +61,7 @@ function compendium.setup(user_config)
           landing_dir = vim.loop.cwd(),
           templates_dir = config.templates_dir,
           insert_datetime_header = config.insert_datetime_header,
+          telescope_theme = config.telescope_theme,
         })
       end,
       mode = "n",
@@ -71,6 +76,7 @@ function compendium.setup(user_config)
         require("compendium.actions.insert_template")({
           templates_dir = config.templates_dir,
           insert_datetime_header = config.insert_datetime_header,
+          telescope_theme = config.telescope_theme,
         })
       end,
       mode = "n",

@@ -1,11 +1,5 @@
 local get_formatted_datetime = require("compendium.utils.get_formatted_datetime")
-
-local function apply_theme(command, opts)
-  local themes = require("telescope.themes")
-  return function()
-    command(themes.get_ivy(opts))
-  end
-end
+local telescope_utils = require("compendium.utils.telescope")
 
 local function get_selected_template(opts)
   local selection = opts.telescope_actions_state.get_selected_entry()
@@ -60,7 +54,7 @@ local function insert_template(opts)
     return
   end
 
-  pcall(apply_theme(telescope.find_files, {
+  local themed_find_files = telescope_utils.apply_theme(opts.telescope_theme, telescope.find_files, {
     prompt_title = "Select template to insert",
     cwd = opts.templates_dir,
     hidden = true,
@@ -134,7 +128,16 @@ local function insert_template(opts)
 
       return true
     end,
-  }))
+  })
+
+  if themed_find_files then
+    pcall(themed_find_files)
+  else
+    vim.notify(
+      "[compendium.nvim] insert_template action failed: could not prepare telescope action",
+      vim.log.levels.WARN
+    )
+  end
 end
 
 return insert_template

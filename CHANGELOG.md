@@ -10,7 +10,21 @@ Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-- Implemented `insert_template` action and mapped it to `<leader>ci` by default
+- Added new action `insert_template` which inserts a template into the currently
+  open buffer
+- Added a new configuration option named `telescope_theme`
+  - This will allow users to specify which telescope theme to use for the file
+    pickers (e.g. ivy, dropdown, cursor, or default for no theme)
+
+### Changed
+
+- Refactored theme application logic for better reusability
+  - Moved theme handling code into a separate utility module
+  - Updated all actions to use the new utility module
+- Changed the default telescope appearance for file pickers from `ivy` to no
+  theme
+  - This way the plugin does not enforce a particular theme and users can change
+    it to whatever they like
 
 ## [v0.1.0] - 2025-04-26
 

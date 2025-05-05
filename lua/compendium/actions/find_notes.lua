@@ -1,9 +1,4 @@
-local function apply_theme(command, opts)
-  local themes = require("telescope.themes")
-  return function()
-    command(themes.get_ivy(opts))
-  end
-end
+local telescope_utils = require("compendium.utils.telescope")
 
 local function find_notes(opts)
   if not opts.landing_dir or opts.landing_dir == "" then
@@ -26,11 +21,17 @@ local function find_notes(opts)
     return
   end
 
-  pcall(apply_theme(telescope.find_files, {
+  local themed_find_files = telescope_utils.apply_theme(opts.telescope_theme, telescope.find_files, {
     prompt_title = "Find notes",
     cwd = opts.landing_dir,
     hidden = true,
-  }))
+  })
+
+  if themed_find_files then
+    pcall(themed_find_files)
+  else
+    vim.notify("[compendium.nvim] find_notes action failed: could not prepare telescope action", vim.log.levels.WARN)
+  end
 end
 
 return find_notes
